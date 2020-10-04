@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from "mobx-react"
 import UserStore from './stores/UserStore'
 import LoginForm from "./LoginForm"
+import RegisterForm from "./RegisterForm"
 import Select from 'react-select';
 import SubmitButton from "./SubmitButton"
 import './App.css';
@@ -119,7 +120,7 @@ class App extends React.Component {
       const res = await fetch("https://localhost:44365/api/Automovil/Report?type=" + val.value, requestOptions);
 
       let result = await res.json();
-     
+
 
       var labels = [], number = []
       result.map(function (item, i) {
@@ -148,11 +149,11 @@ class App extends React.Component {
           ]
         }
       });
-    } else   {
-      
+    } else {
 
-       
-      this.setState({   
+
+
+      this.setState({
       });
     }
   }
@@ -172,80 +173,108 @@ class App extends React.Component {
       console.log(e)
     }
   }
+  async doRegister() {
+
+    try {
+
+      localStorage.setItem("Token", "");
+      UserStore.isLoggedIn = false;
+      UserStore.Register = true;
+      localStorage.setItem("Name", "");
+
+      window.location.reload()
+
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
 
   render() {
     const { selectedOption } = this.state;
-    if (UserStore.loading) {
-      return (
-        <div className="app">
-          <div className="container">
-            Loading, please wait...
-          </div>
-        </div>
-      );
-    }
-    else {
-
-      if (localStorage.getItem("Token") != "" && localStorage.getItem("Token") != null) {
+    if (!UserStore.Register) {
+      if (UserStore.loading) {
         return (
-          <div className="app" style={{  paddingTop:"30pt",backgroundColor:"rgba(255,255, 255, 0.8)"}}>
-            
+          <div className="app">
             <div className="container">
-              <div class="row">
-            <MDBCol md="11" >
-              <h3> Welcome &nbsp;<b style={{color:"#5CE6B0"}}>{localStorage.getItem("Name")}</b> 
-              </h3>
-              </MDBCol>
-            <MDBCol md="1" >
-              <MDBBtn style={{backgroundColor: "#4285F4 !important",color:"black !important"}} disabled={this.state.buttonDisable} onClick={() => this.doLogout()}>Logout</MDBBtn>
-              </MDBCol>
-              </div>
-              <br />
-              Select type
-              <br />
-              <Select
-                value={selectedOption}
-                onChange={this.handleChange}
-                options={options}
-              />
-              <Bar
-                redraw
-                data={this.state.chartData}
-                options={{
-                  scales: {
-                    yAxes: [{
-                      ticks: {
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
-                    }]
-                  },
-                  title: {
-                    display: "hola",
-                    text: "Graph",
-                    fontSize: 25
-                  },
-                  legend: {
-                    position: "bottom"
-                  }
-                }}
-              />
-   
-
-            </div>
+              Loading, please wait...
+          </div>
           </div>
         );
       }
       else {
-        return (
-          <div className="app">
-            <div className="container">
 
-              <LoginForm />
+        if (localStorage.getItem("Token") != "" && localStorage.getItem("Token") != null) {
+          return (
+            <div className="app" style={{ paddingTop: "30pt", backgroundColor: "rgba(255,255, 255, 0.8)" }}>
+
+              <div className="container">
+                <div class="row">
+                  <MDBCol md="11" >
+                    <h3> Welcome &nbsp;<b style={{ color: "#5CE6B0" }}>{localStorage.getItem("Name")}</b>
+                    </h3>
+                  </MDBCol>
+                  <MDBCol md="1" >
+                    <MDBBtn style={{ backgroundColor: "#4285F4 !important", color: "black !important" }} disabled={this.state.buttonDisable} onClick={() => this.doLogout()}>Logout</MDBBtn>
+                  </MDBCol>
+                </div>
+                <br />
+              Select type
+              <br />
+                <Select
+                  value={selectedOption}
+                  onChange={this.handleChange}
+                  options={options}
+                />
+                <Bar
+                  redraw
+                  data={this.state.chartData}
+                  options={{
+                    scales: {
+                      yAxes: [{
+                        ticks: {
+                          stepSize: 1,
+                          beginAtZero: true
+                        }
+                      }]
+                    },
+                    title: {
+                      display: "hola",
+                      text: "Graph",
+                      fontSize: 25
+                    },
+                    legend: {
+                      position: "bottom"
+                    }
+                  }}
+                />
+
+
+              </div>
             </div>
-          </div>
-        );
+          );
+        }
+        else {
+          return (
+            <div className="app">
+              <div className="container">
+
+                <LoginForm />
+              </div>
+            </div>
+          );
+        }
       }
+    }
+    else{
+      return (
+        <div className="app">
+          <div className="container">
+            <RegisterForm/>
+            <regis />
+          </div>
+        </div>
+      );
     }
   }
 }

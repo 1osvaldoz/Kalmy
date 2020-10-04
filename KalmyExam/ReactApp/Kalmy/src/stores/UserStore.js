@@ -5,6 +5,7 @@ class UserStore{
           loading:true,
           isLoggedIn:false,
           username:'',
+          Register:false,
           Token:'',
       })  
     }

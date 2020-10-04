@@ -34,7 +34,12 @@ class LoginForm extends React.Component {
             buttonDisable: false
         })
     }
-    async doLogin() {
+    async doRegister() {
+        UserStore.Register = true;
+
+    }
+        async doLogin() {
+            debugger
         if (!this.state.username) {
             return;
         }
@@ -83,7 +88,7 @@ class LoginForm extends React.Component {
     }
     render() {
         return (
-            <MDBContainer style={{ paddingLeft:"20%",paddingTop:"20%",backgroundColor:"rgba(255,255, 255, 0.8)"}}>
+            <MDBContainer style={{ paddingLeft:"15%",paddingTop:"15%",backgroundColor:"rgba(255,255, 255, 0.8)"}}>
             <MDBRow>
               <MDBCol md="9" >
                   
@@ -95,6 +100,7 @@ class LoginForm extends React.Component {
                   </div>
                   <div className="text-center">
                     <MDBBtn disabled={this.state.buttonDisable} onClick={()=>this.doLogin()}>Login</MDBBtn>
+                    <MDBBtn  onClick={()=>this.doRegister()}>Register</MDBBtn>
                   </div>
                 </form>
               </MDBCol>
